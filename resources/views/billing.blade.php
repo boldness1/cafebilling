@@ -60,20 +60,14 @@
                     </thead>
                     <tbody>
 
-
-                @foreach($bills as $bill)
+@foreach($bills as $bill)
                         <tr>
-                            <td class="col-md-8"><em>{{$bill->Product_Type}}</em></h4></td>
-                        <td class="col-md-1" style="text-align: center">{{$bill->Quantity}}</td>
-                            <td class="col-md-1 text-center">{{$bill->Products_Price_Perorder}}</td>
+                            <td class="col-md-8"><em>{{$bill['Product_Type']}}</em></h4></td>
+                        <td class="col-md-1" style="text-align: center">{{$bill['Quantity']}}</td>
+                            <td class="col-md-1 text-center">{{$bill['Products_Price_Perorder']}}</td>
 
 
                         </tr>
-                        <tr>
-                                <th>Tot:{{$bill->created_at}} </th>
-
-                        </tr>
-
 @endforeach
 
 <tr>
@@ -81,12 +75,8 @@
 
     <td></td>
     <td></td>
-    <td class="text-right"><h4><strong>Total:</strong></h4></td>
-    <td class="text-center text-danger"><h4><strong>{{$bills->sum('Products_Price_Perorder')}}</strong></h4></td>
-</tr><br>
-<tr>
-
-
+    <td class="text-right"><h4><strong>Total: </strong></h4></td>
+    <td class="text-center text-danger"><h4><strong>{{$Total}}</strong></h4></td>
 </tr>
 
 

@@ -8,6 +8,7 @@ use App\Order;
 use App\Customer;
 use Carbon\Carbon;
 
+
 class BillingController extends Controller
 {
     public function index(Request $request)
@@ -27,23 +28,38 @@ class BillingController extends Controller
         else {
             $billing= new Billing();
       $date=Carbon::now()->format('Y-m-d');
-      $report = [];
-      $bills= $billing->whereDate('created_at', $date)->get();
-     /*dd($bills->groupBy('Product_Type')->orderBy('desc'));
 
-     foreach($bills as $bill){
+     // $bills= $billing->whereDate('created_at', $date)->get();
+      $biller= $billing->whereDate('created_at', $date)->get()->groupby('Product_Type');
+      $billTotal =$billing->whereDate('created_at', $date)->get();
+      $Total=$billTotal->sum('Products_Price_Perorder');
+      $Quantity = $billTotal->sum('Products_Price_Perorder');
+      $bills=$reports=$this->getReport($biller);
 
-      $reports = [
-        'product_type' => $bill->Product_Type ,
-        'Quantity'     => $bills->groupby('Product_Type')->sum('Quantity'),
-        'Price'        => $bill->Products_Price_Perorder
 
-      ];
-    }*/
         }
 
-        return view('billing')->with('bills',$bills);
+        return view('billing')->with('bills',$bills)->with('Total',$Total);
     }
 
+    public function getReport($bills){
+     $Total = 0;
+     foreach($bills as $bill){
+        foreach($bill as $b){
+
+        }
+            $reports[] = [
+                'Product_Type' =>  $b->Product_Type,
+                'Quantity'     =>  $bill->sum('Quantity'),
+                'Products_Price_Perorder' => $b->Products_Price_Perorder/$b->Quantity*$bill->sum('Quantity')
+
+              ];
+
+      }
+     return $reports;
+    }
+
+
 }
+
 
