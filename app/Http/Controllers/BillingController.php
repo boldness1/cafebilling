@@ -14,14 +14,15 @@ class BillingController extends Controller
     public function index(Request $request)
     {
 
-        if($request->exists('date1'))
+        if($request->exists('date1') && $request->input('date1')!=null && $request->exists('date2') && $request->input('date2')!=null && $request->input('date1') < $request->input('date2'))
         {
             //dd($request->date1);
             $billing= new Billing();
             $date1=$request->date1;
             $date2=$request->date2;
-            $bills=$billing->whereBetween('created_at', [$date1, $date2])->get();
-
+            $biller=$billing->whereBetween('created_at', [$date1, $date2])->get()->groupby('Product_Type');
+            $bills    =$this->getReport($biller);
+            $Total    =$this->getTotalBill($bills);
 
         }
 
@@ -30,11 +31,10 @@ class BillingController extends Controller
       $date=Carbon::now()->format('Y-m-d');
 
      // $bills= $billing->whereDate('created_at', $date)->get();
-      $biller= $billing->whereDate('created_at', $date)->get()->groupby('Product_Type');
-      $billTotal =$billing->whereDate('created_at', $date)->get();
-      $Total=$billTotal->sum('Products_Price_Perorder');
-      $Quantity = $billTotal->sum('Products_Price_Perorder');
-      $bills=$reports=$this->getReport($biller);
+      $biller   = $billing->whereDate('created_at', $date)->get()->groupby('Product_Type');
+      $billTotal=$billing->whereDate('created_at', $date)->get();
+      $bills    =$this->getReport($biller);
+      $Total    =$this->getTotalBill($bills);
 
 
         }
@@ -48,7 +48,7 @@ class BillingController extends Controller
         foreach($bill as $b){
 
         }
-            $reports[] = [
+            $billVals[] = [
                 'Product_Type' =>  $b->Product_Type,
                 'Quantity'     =>  $bill->sum('Quantity'),
                 'Products_Price_Perorder' => $b->Products_Price_Perorder/$b->Quantity*$bill->sum('Quantity')
@@ -56,10 +56,20 @@ class BillingController extends Controller
               ];
 
       }
-     return $reports;
+     return $billVals;
+    }
+public function getTotalBill($bills){
+    $Total= 0;
+    foreach($bills as $bill){
+        $Total += $bill['Products_Price_Perorder'];
+
+
     }
 
+    return $Total;
+}
 
 }
+
 
 

@@ -29,7 +29,7 @@
         <div class="col-md-2">
 <br>
 
-            <input class="btn form-control" type="submit" name="Report" id="report" value="Report" style="background-color:rgb(129, 165, 137);">
+            <input class="btn form-control" type="submit" name="ReportBtn" id="reportBtn" value="Report" style="background-color:rgb(129, 165, 137);">
 
 
         </div>
@@ -42,10 +42,10 @@
 
         <div class="row">
             <div class="col-md-4">
-                        <strong>Holy Cafe</strong>
+                        <strong class="text-danger">Holy Cafe</strong>
             </div>
 
-                    <h1>Billing Table</h1>
+                    <h1 class="text-danger">Billing Table</h1>
         </div>
 
 
@@ -62,21 +62,20 @@
 
 @foreach($bills as $bill)
                         <tr>
-                            <td class="col-md-8"><em>{{$bill['Product_Type']}}</em></h4></td>
-                        <td class="col-md-1" style="text-align: center">{{$bill['Quantity']}}</td>
-                            <td class="col-md-1 text-center">{{$bill['Products_Price_Perorder']}}</td>
+                            <td class="col-md-8 text-white"><em>{{$bill['Product_Type']}}</em></h4></td>
+                        <td class="col-md-1 text-white" style="text-align: center">{{$bill['Quantity']}}</td>
+                            <td class="col-md-1 text-center text-white">{{$bill['Products_Price_Perorder']}}</td>
 
 
                         </tr>
 @endforeach
 
 <tr>
-
-
     <td></td>
-    <td></td>
-    <td class="text-right"><h4><strong>Total: </strong></h4></td>
-    <td class="text-center text-danger"><h4><strong>{{$Total}}</strong></h4></td>
+
+    <td class="text-right"><h4><strong>Total:</strong></h4></td>
+    <td class="text-right text-danger"><h5><strong>{{$Total}}</strong></h5></td>
+    <td class="text-left text-danger"><h5><strong>TL.</strong></h5></td><td></td>  <td></td>
 </tr>
 
 
